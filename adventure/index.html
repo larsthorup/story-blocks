@@ -1,0 +1,102 @@
+<script id="init" type="text/markdown">
+</script>
+
+<script id="start" type="text/markdown">
+${score=0,''}
+# The fortune of the Unknown Castle
+
+You're a clever princess, standing in the hall of an unknown castle.
+Suddenly a handsome wizard shows up by your side.
+He says:
+
+- There is a dragon coming.
+- In the basement is a cage, and you may be able to trap the dragon there.
+- Up the stairs in the tower is a chest full of gold.
+- Behind this door is a room with a view and a bottle of wine.
+
+Do you trust the wizard?
+
+* [Yes](#trust)
+* [No](#notrust)
+</script>
+
+<script id="trust" type="text/markdown">
+${score+=1,''}
+You could try to lure the dragon to the basement and lock it up, then go get the chest of gold.
+Or you could be quick and invite the wizard to the pretty room for a glass of wine, making sure to lock the door thorougly behind you.
+
+Which do you choose?
+
+* [Dragon and gold](#dragongold)
+* [Wizard and wine](#wizardwine)
+</script>
+
+<script id="dragongold" type="text/markdown">
+${score+=1,''}
+[How does it end?](#results)
+</script>
+
+<script id="wizardwine" type="text/markdown">
+${score+=0,''}
+[How does it end?](#results)
+</script>
+
+<script id="notrust" type="text/markdown">
+${score+=0,''}
+You don't trust the wizard, but what part does he lie about -- the dragon or the gold?
+If you think he lies about the dragon, you could easily go fetch the chest of gold in the tower.
+If you think he lies about the gold, you'd better hurry into the room and lock the door thorougly behind you.
+
+Which do you choose?
+
+* [Go for the gold](#tower)
+* [Hide from the dragon](#hide)
+</script>
+
+<script id="tower" type="text/markdown">
+${score-=1,''}
+[How does it end?](#results)
+</script>
+
+<script id="hide" type="text/markdown">
+${score+=0,''}
+[How does it end?](#results)
+</script>
+
+<script id="results" type="text/markdown">
+You finished the mini princess adventure!
+Among the possible results, yours is highlighted:
+
+* ${score==+2 ? '**' : ''}Good for you! You were trusting and daring, caught the dragon and got yourself a chest full of gold.${score==+2 ? '**' : ''}
+* ${score==+1 ? '**' : ''}Yay! You saved your life and scored a cute date.${score==+1 ? '**' : ''}
+* ${score==+0 ? '**' : ''}Very nice, you saved your life and got a good glass of wine.${score==+0 ? '**' : ''}
+* ${score==-1 ? '**' : ''}Too bad. The wizard was right about the dragon. It caught up with you in the tower and ate you.${score==-1 ? '**' : ''}
+
+[Try again!](#start)
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet "href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/base-min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.5.0/showdown.min.js"></script>
+
+<script>
+  var converter = new showdown.Converter();
+  eval('`' + document.getElementById('init').textContent + '`'); // Note: eval is evil!
+  function updatePage () {
+    var block = window.location.hash.substr(1) || 'start';
+    var template = document.getElementById(block).textContent;
+    var text = eval('`' + template + '`'); // Note: eval is evil!
+    var html = converter.makeHtml(text);
+    document.body.innerHTML = html;
+  }
+  window.addEventListener('hashchange', updatePage, false);
+  window.addEventListener('DOMContentLoaded', updatePage, false);
+</script>
