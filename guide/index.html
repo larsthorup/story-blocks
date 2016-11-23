@@ -1,0 +1,76 @@
+<script id="init" type="text/markdown">
+</script>
+
+<script id="start" type="text/markdown">
+${compiler = interpreter = weak = strong = false, ''}
+#Which programming language do you prefer?
+
+Let's try to figure out which programming language you prefer by asking a few questions.
+
+[First question](#processor)
+</script>
+
+<script id="processor" type="text/markdown">
+Some languages are interpreted directly from the source code where other languages have an initial compilation step before the program can run. Do you prefer:
+* [Interpreted language](#interpret)
+* [Compiled language](#compile)
+</script>
+
+<script id="interpret" type="text/markdown">
+${interpreter = true, ''}
+#Interpreted languages start faster!
+[Next question](#types)
+</script>
+
+<script id="compile" type="text/markdown">
+${compiler = true, ''}
+#Compiled languages runs faster!
+[Next question](#types)
+</script>
+
+<script id="types" type="text/markdown">
+Some languages have a strong type system where variables can never hold values of different types. Other languages have a weak type system, where variables can hold values of different types over time. Do you prefer:
+* [Strong typing](#strong-typing)
+* [Weak typing](#weak-typing)
+</script>
+
+<script id="strong-typing" type="text/markdown">
+${strong = true, ''}
+#Strong typing fails faster!
+[See your results](#results)
+</script>
+
+<script id="weak-typing" type="text/markdown">
+${weak = true, ''}
+#Weak typing requires less code!
+[See your results](#results)
+</script>
+
+<script id="results" type="text/markdown">
+#Your preferred programming language is:
+
+${interpreter && strong ? 'Ruby' : ''}
+${interpreter && weak ? 'JavaScript' : ''}
+${compiler && strong ? 'C#' : ''}
+${compiler && weak ? 'Groovy' : ''}
+
+[Try again!](#start)
+</script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.5.0/showdown.min.js"></script>
+
+<script>
+  var converter = new showdown.Converter();
+  eval('`' + document.getElementById('init').textContent + '`'); // Note: eval is evil!
+  function updatePage () {
+    var block = window.location.hash.substr(1) || 'start';
+    var template = document.getElementById(block).textContent;
+    var text = eval('`' + template + '`'); // Note: eval is evil!
+    var html = converter.makeHtml(text);
+    document.body.innerHTML = html;
+  }
+  window.addEventListener('hashchange', updatePage, false);
+  window.addEventListener('DOMContentLoaded', updatePage, false);
+</script>
